@@ -1,1 +1,2 @@
-require "understudy/version"
+require 'understudy/version'
+require 'rdiff_simple'
