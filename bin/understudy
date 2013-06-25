@@ -9,6 +9,10 @@ require 'thor'
 module Understudy
   class CLI < Thor
     include Thor::Actions
+
+    def setup()
+
+    end
   end
 end
 
