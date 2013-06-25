@@ -10,7 +10,8 @@ module Understudy
   class CLI < Thor
     include Thor::Actions
 
-    def setup()
+    desc 'setup stage', 'Sets up a new stage for performances'
+    def setup_stage()
 
     end
   end
