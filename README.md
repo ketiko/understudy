@@ -4,7 +4,8 @@
 [![Build Status](https://travis-ci.org/ketiko/understudy.png?branch=master)](https://travis-ci.org/ketiko/understudy)
 [![Dependency Status](https://gemnasium.com/ketiko/understudy.png)](https://gemnasium.com/ketiko/understudy)
 [![Code Climate](https://codeclimate.com/github/ketiko/understudy.png)](https://codeclimate.com/github/ketiko/understudy)
-[![Coverage Status](https://coveralls.io/repos/ketiko/understudy.png)](https://coveralls.io/r/ketiko/understudy)
+[![Coverage Status](https://coveralls.io/repos/ketiko/understudy/badge.png?branch=master)](https://coveralls.io/r/ketiko/understudy?branch=master)
+
 
 Automated system backups via rdiff-backup
 
