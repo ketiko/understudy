@@ -88,11 +88,11 @@ def run command
   if command.is_a? Array
     friendly = command.map { |i| i =~ /[^-=\/\.\w]/ ? "'#{i}'" : i }.join ' '
     info "Running: #{friendly}"
-    RdiffSimple.execute( *command ) or error "Could not run #{friendly}"
+    RdiffSimple.execute( friendly ) or error "Could not run #{friendly}"
   else
     friendly = command
     info "Running: #{friendly}"
-    RdiffSimple.execute( command ) or error "Could not run #{command}"
+    RdiffSimple.execute( friendly ) or error "Could not run #{friendly}"
   end
   if $? != 0
     error "Could not run #{friendly}"
