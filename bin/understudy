@@ -105,7 +105,7 @@ run config.command if config.command
 command = []
 
 command << "--terminal-verbosity=5" if @verbose
-#command << "--print-statistics"
+command << "--print-statistics"
 
 command += rdiff_args
 
