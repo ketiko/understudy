@@ -102,8 +102,7 @@ end
 ENV['PATH'] += ":/etc/understudy"
 run config.command if config.command
 
-command = ["nice"]
-command << "rdiff-backup"
+command = []
 
 command << "--terminal-verbosity=5" if @verbose
 #command << "--print-statistics"
