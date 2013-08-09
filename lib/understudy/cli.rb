@@ -13,7 +13,10 @@ module Understudy
       ENV['TMPDIR']='/tmp/understudy/'
 
       log = Logger.new(STDOUT)
-      log.level = Logger::INFO if options[:verbose]
+      log.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
+      log.formatter = proc do |severity, datetime, progname, msg|
+        "#{msg}\n"
+      end
 
       job_name = job
 
@@ -63,8 +66,10 @@ module Understudy
 
       if exists && options["first-time"]
         log.error "Cannot force first time, destination '#{config.dest}' already exists"
+        return 1
       elsif !exists && !options["first-time"]
         log.error "Destination '#{config.dest}' does not appear to exist, try again with --first-time"
+        return 1
       end
 
       run config.command if config.command
@@ -84,20 +89,24 @@ module Understudy
 
     private
     def run(command, log)
+      backup = RdiffSimple::RdiffBackup.new
       friendly = nil
+      succes = false
       if command.is_a? Array
         friendly = command.map { |i| i =~ /[^-=\/\.\w]/ ? "#{i}" : i }.join ' '
-        log.info "Running: #{friendly}"
-        RdiffSimple::RdiffBackup.execute( friendly ) or log.error "Could not run #{friendly}"
+        log.debug "Running: #{friendly}"
+        success = backup.execute friendly
       else
         friendly = command
-        log.info "Running: #{friendly}"
-        RdiffSimple::RdiffBackup.execute( friendly ) or log.error "Could not run #{friendly}"
+        log.debug "Running: #{friendly}"
+        success = backup.execute friendly
       end
-      if $? != 0
-        log.error "Could not run #{friendly}"
+
+      log.info backup.output_log
+      if success
+        log.debug "Backup successful"
       else
-        log.info "Backup successful"
+        log.error "Could not run #{friendly}"
       end
     end
   end
