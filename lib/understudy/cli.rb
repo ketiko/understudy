@@ -1,5 +1,6 @@
 require 'ostruct'
 require 'fileutils'
+require 'logger'
 
 module Understudy
   class CLI < Thor
@@ -79,8 +80,6 @@ module Understudy
       command << config.dest
 
       run command, log
-
-      log.info "Backup successful"
     end
 
     private
@@ -89,14 +88,16 @@ module Understudy
       if command.is_a? Array
         friendly = command.map { |i| i =~ /[^-=\/\.\w]/ ? "#{i}" : i }.join ' '
         log.info "Running: #{friendly}"
-        RdiffSimple.execute( friendly ) or log.error "Could not run #{friendly}"
+        RdiffSimple::RdiffBackup.execute( friendly ) or log.error "Could not run #{friendly}"
       else
         friendly = command
         log.info "Running: #{friendly}"
-        RdiffSimple.execute( friendly ) or log.error "Could not run #{friendly}"
+        RdiffSimple::RdiffBackup.execute( friendly ) or log.error "Could not run #{friendly}"
       end
       if $? != 0
         log.error "Could not run #{friendly}"
+      else
+        log.info "Backup successful"
       end
     end
   end
