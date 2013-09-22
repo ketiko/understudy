@@ -1,4 +1,6 @@
 require 'thor'
+require 'logger'
+require 'active_support/all'
 require 'rdiff_simple'
-require 'understudy/cli'
 require 'understudy/version'
+require 'understudy/cli'

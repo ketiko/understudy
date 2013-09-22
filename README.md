@@ -20,7 +20,9 @@ multiple rdiff-backup scripts.
 
 ## Installation
 
+```bash
 $ gem install understudy
+```
 
 ## Usage
 
