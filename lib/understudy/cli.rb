@@ -9,8 +9,10 @@ module Understudy
     end
 
     desc "perform [job]", "Perform backup [job]"
+    method_option :config_directory, type: :string, default: '/etc/understudy',
+      alias: '-d', desc: 'Directory to search for job configuration file'
     def perform(job_name)
-      config = config_for(job_name)
+      config = config_for(job_name, options[:config_directory])
 
       source = config.delete(:source)
       destination = config.delete(:destination)
@@ -19,8 +21,8 @@ module Understudy
     end
 
     private
-    def config_for(job_name)
-      config_file = "/etc/understudy/#{job_name}.yml"
+    def config_for(job_name, config_directory)
+      config_file = File.join(config_directory, "#{job_name}.yml")
       YAML.load(File.open(config_file)).symbolize_keys!
     end
   end
