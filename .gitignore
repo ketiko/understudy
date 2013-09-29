@@ -18,3 +18,4 @@ tmp
 .ruby-version
 Guardfile
 bin
+.vagrant/
