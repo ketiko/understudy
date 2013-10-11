@@ -1,5 +1,6 @@
 require 'thor'
 require 'logger'
+require 'safe_yaml'
 require 'active_support/all'
 require 'rdiff_simple'
 require 'understudy/version'

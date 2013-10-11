@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "activesupport"
   spec.add_dependency "thor"
+  spec.add_dependency "safe_yaml"
   spec.add_dependency "rdiff-simple"
 
   spec.add_development_dependency "rake"
