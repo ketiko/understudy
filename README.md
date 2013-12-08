@@ -26,7 +26,9 @@ $ gem install understudy
 
 ## Usage
 
+```bash
 $ understudy --help
+```
 
 ## License
 

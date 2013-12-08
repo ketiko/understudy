@@ -9,8 +9,6 @@ describe Understudy::Config do
 
     subject { Understudy::Config.from_file('mock_file.yml') }
 
-    it { should be_kind_of(Hash) }
-
     it 'load the file' do
       expect(subject.size).to be > 0
     end

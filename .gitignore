@@ -19,3 +19,4 @@ tmp
 Guardfile
 bin
 .vagrant/
+understudy.log

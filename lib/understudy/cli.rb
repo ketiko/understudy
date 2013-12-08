@@ -1,31 +1,60 @@
 module Understudy
   class CLI < Thor
-    attr_accessor :rdiff
+    include Thor::Actions
 
-    def initialize(args=[], options={}, config={})
+    attr_accessor :rdiff, :logger
+
+    def initialize args=[], options={}, config={}
       super
 
+      @logger = Logger.new 'understudy.log'
       @rdiff = RdiffSimple::RdiffBackup.new do |r|
-        r.logger = Logger.new(STDOUT)
+        r.logger = @logger
       end
     end
 
-    desc "perform [job]", "Perform backup [job]"
+    def self.source_root
+      File.expand_path "../../../templates", __FILE__
+    end
+
+    desc "prepare [job]", "Create [job] template file"
+    method_option :config_directory, type: :string, default: '/etc/understudy',
+      alias: '-d', desc: 'Directory to write the job configuration file to'
+    def prepare job
+      destination_file = "#{job}.yml"
+      template "job.yml", "#{File.join options[:config_directory], destination_file}"
+    end
+
+    desc "perform backup", "Perform backup"
+    method_option :job, type: :string, alias: '-j', desc: 'Specific job to run'
     method_option :config_directory, type: :string, default: '/etc/understudy',
       alias: '-d', desc: 'Directory to search for job configuration file'
-    def perform(job)
-      config = config_for(job, options[:config_directory])
+    method_option :verbose, type: :boolean, alias: '-v', desc: 'Verbose output'
+    def perform
+      logger.level = Logger::INFO if options.verbose?
 
-      source = config.delete(:source)
-      destination = config.delete(:destination)
+      jobs = Array[options[:job]] unless options[:job].blank?
+      jobs ||= Config.find_files options[:config_directory]
+      jobs.each do |job|
+        say "Performing job #{job}" if options.verbose?
+        logger.info "Performing job #{job}" if options.verbose?
 
-      rdiff.backup(source, destination, config)
+        config = config_for job, options[:config_directory]
+
+        source = config.delete :source
+        destination = config.delete :destination
+
+        failed = rdiff.backup(source, destination, config) != 0
+        error "Job #{job} failed" if options.verbose?
+        logger.error "Job #{job} failed" if options.verbose?
+      end
+
     end
 
     private
-    def config_for(job, config_directory)
-      config_file = File.join(config_directory, "#{job}.yml")
-      Config.from_file(config_file)
+    def config_for job, config_directory
+      config_file = File.join config_directory, "#{job}.yml"
+      Config.from_file config_file
     end
   end
 end
