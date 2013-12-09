@@ -1,8 +1,11 @@
+require 'safe_yaml'
+require 'active_support/core_ext/hash/indifferent_access'
+
 module Understudy
   class Config
     def self.from_file path
       file = File.open path
-      YAML.load(file, safe: true).symbolize_keys!
+      YAML.load(file, safe: true).with_indifferent_access
     end
 
     def self.find_files path

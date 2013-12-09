@@ -1,3 +1,9 @@
+require 'thor'
+require 'logger'
+require 'rdiff_simple'
+require 'active_support/core_ext/object/blank'
+require_relative 'config'
+
 module Understudy
   class CLI < Thor
     include Thor::Actions
@@ -37,7 +43,7 @@ module Understudy
       jobs ||= Config.find_files options[:config_directory]
       jobs.each do |job|
         say "Performing job #{job}" if options.verbose?
-        logger.info "Performing job #{job}" if options.verbose?
+        logger.info "Performing job #{job}"
 
         config = config_for job, options[:config_directory]
 
@@ -45,8 +51,8 @@ module Understudy
         destination = config.delete :destination
 
         failed = rdiff.backup(source, destination, config) != 0
-        error "Job #{job} failed" if options.verbose?
-        logger.error "Job #{job} failed" if options.verbose?
+        error "Job #{job} failed"
+        logger.error "Job #{job} failed"
       end
 
     end
