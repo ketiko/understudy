@@ -1,3 +1,7 @@
+### Depreciated
+
+I never got around to actually finishing this project.  With the rise of filesystems that support snapshotting and deduplication this project has become less relavant for me.  I'd suggest using obnam or ZFS as alternatives to rdiff-backup workflows.
+
 # Understudy
 
 [![Gem Version](https://badge.fury.io/rb/understudy.png)](http://badge.fury.io/rb/understudy)
